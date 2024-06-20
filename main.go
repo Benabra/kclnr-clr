@@ -1,6 +1,8 @@
 package main
 
-import "kclnr-cli/cmd"
+import (
+	"github.com/Benabra/kclnr-clr/cmd"
+)
 
 func main() {
 	cmd.Execute()
