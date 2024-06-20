@@ -1,6 +1,6 @@
-module kclnr-cli
+module github.com/Benabra/kclnr-clr
 
-go 1.22.4
+go 1.16
 
 require (
 	github.com/fatih/color v1.17.0
