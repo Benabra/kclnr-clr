@@ -1,5 +1,7 @@
 # kclnr-cli
 
+![Project Icon](img/icon.png)
+
 `kclnr` is a simple command-line tool written in Go for managing Kubernetes contexts and nodes.
 
 ## Table of Contents
