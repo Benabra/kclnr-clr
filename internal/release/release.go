@@ -18,22 +18,28 @@ func RunRelease() {
 	// Step 3: Get version from the built binary
 	version := getVersion("./kclnr")
 
-	// Step 4: Git add all changes
+	// Step 4: Check if the tag already exists
+	tag := fmt.Sprintf("v%s", version)
+	if tagExists(tag) {
+		fmt.Printf("Tag %s already exists. Skipping release process.\n", tag)
+		return
+	}
+
+	// Step 5: Git add all changes
 	runCommand("git", "add", ".")
 
-	// Step 5: Git commit
+	// Step 6: Git commit
 	commitMessage := "Fix module import paths and update project structure"
 	runCommand("git", "commit", "-m", commitMessage)
 
-	// Step 6: Git push
+	// Step 7: Git push
 	runCommand("git", "push", "origin", "main")
 
-	// Step 7: Git tag
-	tag := fmt.Sprintf("v%s", version)
+	// Step 8: Git tag
 	tagMessage := fmt.Sprintf("Release version %s", version)
 	runCommand("git", "tag", "-a", tag, "-m", tagMessage)
 
-	// Step 8: Git push tag
+	// Step 9: Git push tag
 	runCommand("git", "push", "origin", tag)
 }
 
@@ -66,4 +72,16 @@ func getVersion(binaryPath string) string {
 	}
 
 	return parts[2]
+}
+
+func tagExists(tag string) bool {
+	cmd := exec.Command("git", "tag", "--list", tag)
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	err := cmd.Run()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error checking if tag exists: %v\n", err)
+		os.Exit(1)
+	}
+	return strings.TrimSpace(out.String()) == tag
 }
