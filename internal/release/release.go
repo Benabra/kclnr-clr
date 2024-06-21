@@ -1,6 +1,7 @@
 package release
 
 import (
+	"bufio"
 	"bytes"
 	"fmt"
 	"os"
@@ -25,21 +26,23 @@ func RunRelease() {
 		return
 	}
 
-	// Step 5: Git add all changes
+	// Step 5: Ask for commit message
+	commitMessage := getCommitMessage()
+
+	// Step 6: Git add all changes
 	runCommand("git", "add", ".")
 
-	// Step 6: Git commit
-	commitMessage := "Fix module import paths and update project structure"
+	// Step 7: Git commit
 	runCommand("git", "commit", "-m", commitMessage)
 
-	// Step 7: Git push
+	// Step 8: Git push
 	runCommand("git", "push", "origin", "main")
 
-	// Step 8: Git tag
+	// Step 9: Git tag
 	tagMessage := fmt.Sprintf("Release version %s", version)
 	runCommand("git", "tag", "-a", tag, "-m", tagMessage)
 
-	// Step 9: Git push tag
+	// Step 10: Git push tag
 	runCommand("git", "push", "origin", tag)
 }
 
@@ -84,4 +87,15 @@ func tagExists(tag string) bool {
 		os.Exit(1)
 	}
 	return strings.TrimSpace(out.String()) == tag
+}
+
+func getCommitMessage() string {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("Enter commit message: ")
+	message, err := reader.ReadString('\n')
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error reading commit message: %v\n", err)
+		os.Exit(1)
+	}
+	return strings.TrimSpace(message)
 }
