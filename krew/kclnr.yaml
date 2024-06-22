@@ -1,0 +1,40 @@
+apiVersion: krew.googlecontainertools.github.com/v1alpha2
+kind: Plugin
+metadata:
+  name: kclnr
+spec:
+  version: "0.16.1"
+  shortDescription: "Manage Kubernetes contexts and nodes easily"
+  description: |
+    kclnr is a command-line tool to simplify the management of Kubernetes contexts and nodes.
+  platforms:
+    - selector:
+        matchLabels:
+          os: linux
+          arch: amd64
+      uri: "https://github.com/Benabra/kclnr-cli/releases/download/v0.16.1/kclnr-linux-amd64.tar.gz"
+      sha256: "your-linux-sha256-here"
+      bin: kclnr
+      files:
+        - from: "*"
+          to: "."
+    - selector:
+        matchLabels:
+          os: darwin
+          arch: amd64
+      uri: "https://github.com/Benabra/kclnr-cli/releases/download/v0.16.1/kclnr-darwin-amd64.tar.gz"
+      sha256: "your-darwin-sha256-here"
+      bin: kclnr
+      files:
+        - from: "*"
+          to: "."
+    - selector:
+        matchLabels:
+          os: windows
+          arch: amd64
+      uri: "https://github.com/Benabra/kclnr-cli/releases/download/v0.16.1/kclnr-windows-amd64.zip"
+      sha256: "your-windows-sha256-here"
+      bin: kclnr.exe
+      files:
+        - from: "*"
+          to: "."
